@@ -1,0 +1,26 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "appgen"
+version = "0.1.1"
+description = "A project generator CLI for web frameworks"
+authors = [
+    { name = "Ratish jain", email = "ratishjain6@gmail.com" }
+]
+dependencies = [
+    "typer",
+    "rich"
+]
+requires-python = ">=3.7"
+
+[project.scripts]
+appgen = "genapp:app"
+
+[tool.setuptools]
+packages = ["generator"]
+py-modules = ["genapp"]
+
+[tool.setuptools.package-data]
+"generator" = ["../templates/**/*"]
