@@ -1,0 +1,61 @@
+# AppGen Configuration File
+# This file can be placed in your project root or in ~/.appgen/config.yaml
+
+frameworks:
+  interactive:
+    nextjs:
+      name: "Next.js"
+      description: "React framework for production"
+      routers: ["app", "pages"]
+      features: ["typescript", "tailwind"]
+      default_features: ["typescript", "tailwind"]
+      feature_descriptions:
+        typescript: "Add TypeScript support"
+        tailwind: "Add Tailwind CSS for styling"
+
+    reactjs:
+      name: "React"
+      description: "JavaScript library for building user interfaces"
+      features: ["typescript", "tailwind"]
+      default_features: ["typescript", "tailwind"]
+      feature_descriptions:
+        typescript: "Add TypeScript support"
+        tailwind: "Add Tailwind CSS for styling"
+
+  simple:
+    express:
+      name: "Express.js"
+      description: "Fast, unopinionated web framework for Node.js"
+
+    flask:
+      name: "Flask"
+      description: "Lightweight WSGI web application framework"
+
+presets:
+  mern:
+    name: "MERN Fullstack"
+    description: "MongoDB, Express, React, Node.js fullstack boilerplate"
+    frontend:
+      framework: "reactjs"
+      features: ["typescript", "tailwind"]
+      directory: "client"
+    backend:
+      framework: "express"
+      features: ["typescript"]
+      directory: "server"
+
+ui:
+  welcome_message: "Welcome to AppGen!"
+  welcome_subtitle: "Let's create your next project together."
+  default_project_name: "my-project"
+  colors:
+    primary: "cyan"
+    secondary: "magenta"
+    success: "green"
+    warning: "yellow"
+    error: "red"
+
+templates:
+  base_path: "templates"
+  auto_cleanup: true
+  merge_package_json: true
