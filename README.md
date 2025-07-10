@@ -11,6 +11,20 @@ A modern project generator CLI for web frameworks. Quickly scaffold projects for
 - **Serverless Ready**: AWS SAM templates for serverless deployment
 - **Fullstack Presets**: MERN stack, Next.js + Prisma, and more
 - **Clean Architecture**: Modular, maintainable codebase
+- **Cross-Platform**: Works on Windows, macOS, and Linux
+
+## 🏗️ Architecture
+
+AppGen uses a clean, modular architecture for maintainability and extensibility:
+
+```
+appgen/
+├── __init__.py              # Package initialization
+├── cli.py                   # Main CLI orchestration
+├── ui_helper.py             # UI operations and styling
+├── framework_selector.py    # Framework selection logic
+└── project_manager.py       # Project creation and management
+```
 
 ## 🛠️ Installation
 
@@ -27,6 +41,13 @@ pip install appgen
 git clone https://github.com/yourusername/appgen.git
 cd appgen
 
+# Create and activate virtual environment (recommended)
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+
+# Upgrade pip
+pip install --upgrade pip
+
 # Install in development mode
 pip install -e .
 ```
@@ -36,6 +57,8 @@ pip install -e .
 ```bash
 appgen --help
 ```
+
+You should see the CLI help with all available commands.
 
 ## 🚀 Quick Start
 
@@ -49,10 +72,10 @@ appgen create --interactive
 
 This will guide you through:
 
-1. Framework selection
-2. Feature configuration
+1. Framework selection with beautiful tables
+2. Feature configuration (TypeScript, Tailwind, etc.)
 3. Project directory setup
-4. Project generation
+4. Project generation with progress indicators
 
 ### Command Line Mode
 
@@ -83,6 +106,9 @@ appgen create --framework nextjs --dir my-next-app --router app --features types
 
 # Next.js with shadcn/ui components
 appgen create --framework nextjs --dir my-next-app --router app --features shadcn
+
+# Next.js with t3 stack (TypeScript + Tailwind + tRPC)
+appgen create --framework nextjs --dir my-next-app --router app --features t3
 ```
 
 ### Express.js Projects
@@ -115,6 +141,9 @@ appgen create --framework reactjs --dir my-react-app --features typescript
 
 # React with Tailwind CSS
 appgen create --framework reactjs --dir my-react-app --features tailwind
+
+# React with both TypeScript and Tailwind
+appgen create --framework reactjs --dir my-react-app --features typescript,tailwind
 ```
 
 ### Python Projects
@@ -125,6 +154,13 @@ appgen create --framework flask --dir my-flask-app
 
 # Django application
 appgen create --framework django --dir my-django-app
+```
+
+### Svelte Projects
+
+```bash
+# Svelte application
+appgen create --framework svelte --dir my-svelte-app
 ```
 
 ### Fullstack Presets
@@ -154,18 +190,23 @@ appgen preset [OPTIONS]
 
 # Interactive mode (shortcut)
 appgen -i
+
+# Show help for any command
+appgen --help
+appgen create --help
+appgen preset --help
 ```
 
 ## 🎯 Available Frameworks
 
 ### Interactive Frameworks
 
-- **Next.js**: App Router & Pages Router, TypeScript, Tailwind, Prisma, shadcn/ui
+- **Next.js**: App Router & Pages Router, TypeScript, Tailwind, Prisma, shadcn/ui, t3
 - **React**: TypeScript, Tailwind CSS
 
 ### Simple Frameworks
 
-- **Express.js**: MongoDB, PostgreSQL, Supabase, AWS Lambda
+- **Express.js**: MongoDB, PostgreSQL, Supabase, AWS Lambda (serverless)
 - **Flask**: Lightweight Python web framework
 - **Django**: Full-featured Python web framework
 - **Svelte**: Cybernetically enhanced web apps
@@ -177,7 +218,7 @@ appgen -i
 - **MongoDB**: NoSQL database with Mongoose ODM
 - **PostgreSQL**: Relational database with Sequelize ORM
 - **Supabase**: Open-source Firebase alternative
-- **AWS DynamoDB**: Serverless NoSQL database (with SAM)
+- **AWS DynamoDB**: Serverless NoSQL database (with SAM template)
 
 ## 🎨 Features & Integrations
 
@@ -189,7 +230,7 @@ appgen -i
 - **Tailwind CSS**: Utility-first CSS framework
 - **Prisma**: Modern database toolkit
 - **shadcn/ui**: Re-usable component library
-- **t3**: Type-safe full-stack development
+- **t3**: Type-safe full-stack development with tRPC
 
 ### React Features
 
@@ -197,7 +238,7 @@ appgen -i
 - **Tailwind CSS**: Utility-first styling
 - **Vite**: Fast build tool
 
-## 🏗️ Project Structure
+## 🏗️ Generated Project Structure
 
 After generation, your project will include:
 
@@ -207,10 +248,13 @@ my-project/
 ├── package.json        # Dependencies and scripts
 ├── .env.example        # Environment variables template
 ├── .gitignore          # Git ignore rules
+├── tsconfig.json       # TypeScript config (if applicable)
+├── tailwind.config.js  # Tailwind config (if applicable)
 └── src/                # Source code
     ├── components/     # Reusable components
     ├── pages/          # Pages (Next.js Pages Router)
     ├── app/            # App directory (Next.js App Router)
+    ├── lib/            # Utility functions
     └── ...
 ```
 
@@ -220,8 +264,8 @@ After creating your project:
 
 ```bash
 cd my-project
-npm install
-npm run dev
+npm install  # or pip install -r requirements.txt for Python projects
+npm run dev  # or python run.py for Python projects
 ```
 
 ## 🔧 Development
@@ -229,28 +273,131 @@ npm run dev
 ### Local Development Setup
 
 ```bash
-# Clone and install
+# Clone the repository
 git clone https://github.com/yourusername/appgen.git
 cd appgen
-pip install -e .
 
-# Run tests
-python -m pytest
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate
 
+# Upgrade pip
+pip install --upgrade pip
+
+# Install development dependencies (includes pre-commit hooks)
+make install-dev
+
+# Test the CLI
+appgen --help
+appgen list-frameworks
+```
+
+### Development Commands
+
+```bash
+make help              # Show all available commands
+make install           # Install package in development mode
+make install-dev       # Install development dependencies
+make test              # Run tests with coverage
+make lint              # Run linting checks
+make format            # Format code
+make security          # Run security checks
+make clean             # Clean build artifacts
+make build             # Build package
+make ci                # Run all CI checks locally
+make pre-commit        # Run pre-commit hooks on all files
+```
+
+### Code Quality Tools
+
+- **Black**: Code formatting
+- **isort**: Import sorting
+- **flake8**: Linting
+- **mypy**: Type checking
+- **bandit**: Security checks
+- **pre-commit**: Git hooks for code quality
+- **commitizen**: Conventional commit messages
+
+### Testing
+
+```bash
+# Test project generation
+appgen create --framework flask --dir test-flask
+appgen create --framework express --dir test-express --db mongodb
+
+# Clean up test projects
+rm -rf test-flask test-express
+```
+
+### Building for Distribution
+
+```bash
 # Build package
 python -m build
 
 # Install from local build
 pip install dist/appgen-*.whl
+
+# Test installed package
+appgen --help
 ```
 
 ### Contributing
 
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for detailed information.
+
+Quick start:
+
 1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Install development dependencies (`make install-dev`)
+4. Make your changes
+5. Run tests (`make test`) and linting (`make lint`)
+6. Commit using conventional commits (`cz commit`)
+7. Push to the branch (`git push origin feature/amazing-feature`)
+8. Open a Pull Request
+
+### CI/CD Pipeline
+
+We use GitHub Actions for continuous integration:
+
+- **Tests**: Run on Python 3.8-3.12
+- **Linting**: Code style and type checking
+- **Security**: Automated security scans
+- **Integration Tests**: Test all framework generations
+- **Build**: Package building and validation
+- **Release**: Automated PyPI publishing on tags
+
+See [`.github/workflows/`](.github/workflows/) for workflow details.
+
+## 🐛 Troubleshooting
+
+### Common Issues
+
+**CLI not found after installation:**
+
+```bash
+# Reinstall in editable mode
+pip uninstall appgen -y
+pip install -e .
+```
+
+**Virtual environment issues:**
+
+```bash
+# Remove and recreate virtual environment
+rm -rf .venv
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -e .
+```
+
+**Permission errors:**
+
+```bash
+# Use user installation
+pip install --user appgen
+```
 
 ## 📝 License
 
@@ -262,6 +409,13 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - 🐛 [Report Issues](https://github.com/yourusername/appgen/issues)
 - 💡 [Request Features](https://github.com/yourusername/appgen/issues)
 - ⭐ [Star the Project](https://github.com/yourusername/appgen)
+- 💬 [Discussions](https://github.com/yourusername/appgen/discussions)
+
+## 🙏 Acknowledgments
+
+- Built with [Typer](https://typer.tiangolo.com/) for CLI
+- Beautiful UI with [Rich](https://rich.readthedocs.io/)
+- Inspired by modern project generators
 
 ---
 
