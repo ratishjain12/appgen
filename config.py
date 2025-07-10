@@ -38,7 +38,15 @@ DEFAULT_CONFIG = {
         "simple": {
             "express": {
                 "name": "Express.js",
-                "description": "Fast, unopinionated web framework for Node.js"
+                "description": "Fast, unopinionated web framework for Node.js",
+                "databases": ["none", "mongodb", "postgresql", "supabase"],
+                "default_database": "none",
+                "database_descriptions": {
+                    "none": "No database (basic Express setup)",
+                    "mongodb": "MongoDB with Mongoose ODM",
+                    "postgresql": "PostgreSQL with Sequelize ORM",
+                    "supabase": "Supabase (PostgreSQL with real-time features)"
+                }
             },
             "flask": {
                 "name": "Flask",

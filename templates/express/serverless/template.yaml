@@ -1,0 +1,111 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  Express.js Serverless Application with AWS SAM
+
+Globals:
+  Function:
+    Timeout: 30
+    Runtime: nodejs18.x
+    Environment:
+      Variables:
+        NODE_ENV: production
+    MemorySize: 512
+
+Parameters:
+  Environment:
+    Type: String
+    Default: dev
+    Description: Environment name (dev, staging, prod)
+    AllowedValues:
+      - dev
+      - staging
+      - prod
+
+Resources:
+  # DynamoDB Table for storing data
+  UsersTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Sub "${Environment}-users-table"
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      SSESpecification:
+        SSEEnabled: true
+
+  # API Gateway
+  ExpressApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: !Ref Environment
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,X-Amz-Date,Authorization,X-Api-Key,X-Amz-Security-Token'"
+        AllowOrigin: "'*'"
+      EndpointConfiguration:
+        Type: REGIONAL
+
+  # Main Lambda Function
+  ExpressFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./
+      Handler: src/index.handler
+      Events:
+        ApiEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /{proxy+}
+            Method: ANY
+        RootEvent:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ExpressApi
+            Path: /
+            Method: ANY
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref UsersTable
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "*"
+      Environment:
+        Variables:
+          USERS_TABLE: !Ref UsersTable
+          ENVIRONMENT: !Ref Environment
+
+  # CloudWatch Log Group
+  ExpressFunctionLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/aws/lambda/${ExpressFunction}"
+      RetentionInDays: 14
+
+Outputs:
+  ExpressApi:
+    Description: "API Gateway endpoint URL"
+    Value: !Sub "https://${ExpressApi}.execute-api.${AWS::Region}.amazonaws.com/${Environment}/"
+    Export:
+      Name: !Sub "${AWS::StackName}-ApiUrl"
+
+  ExpressFunction:
+    Description: "Express Lambda Function ARN"
+    Value: !GetAtt ExpressFunction.Arn
+    Export:
+      Name: !Sub "${AWS::StackName}-FunctionArn"
+
+  UsersTable:
+    Description: "DynamoDB Table Name"
+    Value: !Ref UsersTable
+    Export:
+      Name: !Sub "${AWS::StackName}-UsersTable"

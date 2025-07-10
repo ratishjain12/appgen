@@ -1,0 +1,29 @@
+{
+  "name": "express-serverless-app",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "build": "sam build",
+    "deploy": "sam deploy --guided",
+    "deploy:prod": "sam deploy",
+    "local": "sam local start-api",
+    "invoke": "sam local invoke",
+    "logs": "sam logs -n ExpressFunction --stack-name express-serverless-app --tail"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.0.1",
+    "express": "^4.18.0",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "serverless-http": "^3.2.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10",
+    "@aws-sdk/client-dynamodb": "^3.450.0",
+    "@aws-sdk/lib-dynamodb": "^3.450.0"
+  }
+}
