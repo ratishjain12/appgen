@@ -29,9 +29,14 @@ frameworks:
     express:
       name: "Express.js"
       description: "Fast, unopinionated web framework for Node.js"
-      features: ["mongodb"]
-      feature_descriptions:
-        mongodb: "Add MongoDB integration with Mongoose"
+      databases: ["none", "mongodb", "postgresql", "supabase", "serverless"]
+      default_database: "none"
+      database_descriptions:
+        none: "No database (basic Express setup)"
+        mongodb: "MongoDB with Mongoose ODM"
+        postgresql: "PostgreSQL with Sequelize ORM"
+        supabase: "Supabase (PostgreSQL with real-time features)"
+        serverless: "AWS Lambda with SAM (Serverless Application Model)"
 
     flask:
       name: "Flask"
