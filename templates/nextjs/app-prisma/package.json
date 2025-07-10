@@ -1,0 +1,32 @@
+{
+  "name": "nextjs-prisma-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:studio": "prisma studio",
+    "db:migrate": "prisma migrate dev",
+    "db:reset": "prisma migrate reset"
+  },
+  "dependencies": {
+    "next": "14.2.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "@prisma/client": "^5.7.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "eslint": "^8.56.0",
+    "eslint-config-next": "14.2.3",
+    "prisma": "^5.7.0",
+    "typescript": "^5.3.0"
+  }
+}

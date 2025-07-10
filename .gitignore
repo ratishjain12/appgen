@@ -1,1 +1,11 @@
 venv/
+__pycache__/
+appgen.egg-info/
+
+# Test directories for generated projects just add these letter before the name of the project so it won't get added to the git samjha ratish??
+test-*/
+demo-*/
+example-*/
+temp-*/
+tmp-*/
+uv.lock

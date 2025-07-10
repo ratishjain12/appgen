@@ -7,11 +7,14 @@ frameworks:
       name: "Next.js"
       description: "React framework for production"
       routers: ["app", "pages"]
-      features: ["typescript", "tailwind"]
+      features: ["typescript", "tailwind", "prisma", "t3", "shadcn"]
       default_features: ["typescript", "tailwind"]
       feature_descriptions:
         typescript: "Add TypeScript support"
         tailwind: "Add Tailwind CSS for styling"
+        prisma: "Add Prisma ORM with PostgreSQL"
+        t3: "Add T3 Stack (tRPC + NextAuth + Prisma + Tailwind)"
+        shadcn: "Add shadcn/ui component library (with a Button example)"
 
     reactjs:
       name: "React"
@@ -26,10 +29,21 @@ frameworks:
     express:
       name: "Express.js"
       description: "Fast, unopinionated web framework for Node.js"
+      features: ["mongodb"]
+      feature_descriptions:
+        mongodb: "Add MongoDB integration with Mongoose"
 
     flask:
       name: "Flask"
       description: "Lightweight WSGI web application framework"
+
+    django:
+      name: "Django"
+      description: "The web framework for perfectionists with deadlines"
+
+    svelte:
+      name: "Svelte"
+      description: "Cybernetically enhanced web apps"
 
 presets:
   mern:
@@ -41,8 +55,24 @@ presets:
       directory: "client"
     backend:
       framework: "express"
-      features: ["typescript"]
+      features: ["mongodb"]
       directory: "server"
+
+  nextjs-fullstack:
+    name: "Next.js Fullstack"
+    description: "Next.js with Prisma ORM and PostgreSQL fullstack boilerplate"
+    frontend:
+      framework: "nextjs"
+      features: ["app", "typescript", "tailwind", "prisma"]
+      directory: "."
+
+  t3:
+    name: "T3 Stack"
+    description: "TypeScript + Next.js + Prisma + tRPC + NextAuth + Tailwind fullstack boilerplate"
+    frontend:
+      framework: "nextjs"
+      features: ["app", "typescript", "tailwind", "t3"]
+      directory: "."
 
 ui:
   welcome_message: "Welcome to AppGen!"
