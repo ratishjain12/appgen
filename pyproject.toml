@@ -35,7 +35,7 @@ appgen = "appgen.cli:app"
 
 [tool.setuptools]
 packages = ["generator", "appgen"]
-py-modules = ["genapp"]
+py-modules = ["genapp","config"]
 
 [tool.setuptools.package-data]
 "generator" = ["../templates/**/*"]
