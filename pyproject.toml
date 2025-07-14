@@ -34,7 +34,7 @@ requires-python = ">=3.7"
 appgen = "appgen.cli:app"
 
 [tool.setuptools]
-packages = ["generator"]
+packages = ["generator", "appgen"]
 py-modules = ["genapp"]
 
 [tool.setuptools.package-data]
