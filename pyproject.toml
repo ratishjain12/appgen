@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "appgen"
-version = "0.2.1"
+version = "0.2.2"
 description = "A modern project generator CLI for web frameworks"
 authors = [
     { name = "Ratish jain", email = "ratishjain6@gmail.com" }
