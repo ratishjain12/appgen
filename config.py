@@ -33,7 +33,13 @@ DEFAULT_CONFIG = {
                     "typescript": "Add TypeScript support",
                     "tailwind": "Add Tailwind CSS for styling"
                 }
-            }
+            },
+            "astrojs": {
+                "name": "Astro",
+                "description": "Static site generator for modern web projects",
+              
+            },
+
         },
         "simple": {
             "express": {

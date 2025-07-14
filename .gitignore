@@ -9,3 +9,5 @@ example-*/
 temp-*/
 tmp-*/
 uv.lock
+.venv
+node_modules/
