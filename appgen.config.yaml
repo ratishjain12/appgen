@@ -24,24 +24,22 @@ frameworks:
       feature_descriptions:
         typescript: "Add TypeScript support"
         tailwind: "Add Tailwind CSS for styling"
-    
+
     astrojs:
       name: "Astro"
       description: "Static site generator for modern web projects"
-     
 
   simple:
     express:
       name: "Express.js"
       description: "Fast, unopinionated web framework for Node.js"
-      databases: ["none", "mongodb", "postgresql", "supabase", "serverless"]
+      databases: ["none", "mongodb", "postgresql", "supabase"]
       default_database: "none"
       database_descriptions:
         none: "No database (basic Express setup)"
         mongodb: "MongoDB with Mongoose ODM"
         postgresql: "PostgreSQL with Sequelize ORM"
         supabase: "Supabase (PostgreSQL with real-time features)"
-        serverless: "AWS Lambda with SAM (Serverless Application Model)"
 
     flask:
       name: "Flask"
@@ -54,6 +52,17 @@ frameworks:
     svelte:
       name: "Svelte"
       description: "Cybernetically enhanced web apps"
+
+    serverless:
+      name: "Serverless"
+      description: "Serverless application template (AWS Lambda, etc.)"
+      languages: ["javascript", "typescript", "python", "go"]
+      default_language: "javascript"
+      language_descriptions:
+        javascript: "Node.js (JavaScript) runtime for AWS Lambda, etc."
+        typescript: "TypeScript runtime for AWS Lambda, etc."
+        python: "Python 3.x runtime for AWS Lambda, etc."
+        go: "Go 1.x runtime for AWS Lambda, etc."
 
 presets:
   mern:

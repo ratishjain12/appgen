@@ -8,10 +8,12 @@ A modern project generator CLI for web frameworks. Quickly scaffold projects for
 - **Database Support**: MongoDB, PostgreSQL, Supabase, AWS DynamoDB
 - **Modern Tooling**: TypeScript, Tailwind CSS, Prisma ORM, shadcn/ui
 - **Interactive CLI**: Guided setup with beautiful UI
-- **Serverless Ready**: AWS SAM templates for serverless deployment
+- **Serverless Ready**: AWS SAM templates for serverless deployment (JavaScript, TypeScript, Python, Go)
 - **Fullstack Presets**: MERN stack, Next.js + Prisma, and more
 - **Clean Architecture**: Modular, maintainable codebase
 - **Cross-Platform**: Works on Windows, macOS, and Linux
+- **Smart Dependency Install**: After project creation, choose and auto-detect your preferred package manager (npm, yarn, pnpm, bun)
+- **Editor Detection**: Choose your code editor (VS Code, Cursor, Sublime, Atom, Vim, Nano) with installed status shown
 
 ## 🏗️ Architecture
 
@@ -173,6 +175,22 @@ appgen preset mern --dir my-mern-app
 appgen preset nextjs-fullstack --dir my-nextjs-app
 ```
 
+### Serverless Projects
+
+```bash
+# JavaScript (Node.js) serverless
+appgen create --framework serverless --language javascript --dir my-serverless-js
+
+# TypeScript serverless
+appgen create --framework serverless --language typescript --dir my-serverless-ts
+
+# Python serverless
+appgen create --framework serverless --language python --dir my-serverless-py
+
+# Go serverless
+appgen create --framework serverless --language go --dir my-serverless-go
+```
+
 ## 📋 Available Commands
 
 ```bash
@@ -264,9 +282,42 @@ After creating your project:
 
 ```bash
 cd my-project
-npm install  # or pip install -r requirements.txt for Python projects
+# For JS/TS: You will be prompted to install dependencies interactively with your choice of npm, yarn, pnpm, or bun (auto-detected)
+# For Python: pip install -r requirements.txt
+# For Go: go mod tidy
 npm run dev  # or python run.py for Python projects
 ```
+
+## 🖥️ Editor and Package Manager Selection
+
+After project generation (in interactive mode):
+
+- **Editor Selection**: Choose from Visual Studio Code, Cursor, Sublime Text, Atom, Vim, or Nano. The selection table shows an 'Installed?' column (✅/❌) so you can only select editors that are available on your system.
+- **Package Manager Selection**: For JS/TS projects, you are prompted to install dependencies. Choose from npm, yarn, pnpm, or bun. Only installed package managers are shown.
+
+Example editor selection table:
+
+| #   | Editor             | Command | Installed? |
+| --- | ------------------ | ------- | ---------- |
+| 1   | Visual Studio Code | code    | ✅         |
+| 2   | Cursor             | cursor  | ✅         |
+| 3   | Sublime Text       | subl    | ❌         |
+| 4   | Atom               | atom    | ❌         |
+| 5   | Vim                | vim     | ✅         |
+| 6   | Nano               | nano    | ✅         |
+
+If you select an editor that is not installed, you will be prompted to choose again.
+
+Example package manager selection:
+
+| #   | Package Manager | Installed? |
+| --- | --------------- | ---------- |
+| 1   | npm             | ✅         |
+| 2   | yarn            | ❌         |
+| 3   | pnpm            | ✅         |
+| 4   | bun             | ❌         |
+
+Only installed package managers are available for selection.
 
 ## 🔧 Development
 

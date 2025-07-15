@@ -57,7 +57,7 @@ class AppGenCLI:
         self.project_manager.generate_with_progress(framework, features, dir_name)
         
         # Show post-generation info
-        self.project_manager.show_post_generation_info(dir_name)
+        self.project_manager.show_post_generation_info(dir_name, framework)
 
 
 # Initialize CLI instance
@@ -70,7 +70,8 @@ def create(
     features: str = typer.Option("", help="Comma-separated features"),
     dir: Optional[str] = typer.Option(None, help="Target directory"),
     router: str = typer.Option("pages", help="Router type for Next.js"),
-    db: str = typer.Option("", "--db", help="Database type for Express (mongodb, postgresql, supabase, serverless)"),
+    db: str = typer.Option("", "--db", help="Database type for Express (mongodb, postgresql, supabase)"),
+    language: str = typer.Option("", "--language", help="Language for Serverless (javascript, typescript)"),
     interactive: bool = typer.Option(False, "--interactive", "-i", help="Use interactive mode")
 ):
     """Create a new project with the specified framework and features."""
@@ -101,15 +102,25 @@ def create(
                 raise typer.Exit(1)
             feature_list = [router] + feature_list
         elif framework.lower() == "express" and db:
-            valid_databases = ["mongodb", "postgresql", "supabase", "serverless"]
+            valid_databases = ["mongodb", "postgresql", "supabase"]
             if db.lower() not in valid_databases:
                 typer.echo(f"[red]Invalid database '{db}'. Valid options: {', '.join(valid_databases)}[/red]")
                 raise typer.Exit(1)
             feature_list = [db.lower()]
+        elif framework.lower() == "serverless":
+            valid_languages = ["javascript", "typescript", "python", "go"]
+            lang = language.lower() if language else ""
+            if not lang:
+                typer.echo("[red]--language is required for serverless framework (javascript, typescript)[/red]")
+                raise typer.Exit(1)
+            if lang not in valid_languages:
+                typer.echo(f"[red]Invalid language '{lang}'. Valid options: {', '.join(valid_languages)}[/red]")
+                raise typer.Exit(1)
+            feature_list = [lang]
         
         # Generate project
         generate_project(framework, feature_list, dir)
-        console.print(f"[green]✅ Project '{framework}' created successfully at {dir}![/green]")
+        console.print(f"[green]✅ Project '{framework}' created successfully at {dir}![green]")
 
 
 @app.command()
