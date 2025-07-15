@@ -77,6 +77,8 @@ class FrameworkSelector:
             return self._get_reactjs_options()
         elif framework == "express":
             return self._get_express_options()
+        elif framework == "serverless":
+            return self._get_serverless_options()
         else:
             return []
     
@@ -144,6 +146,30 @@ class FrameworkSelector:
         
         console.print(f"[green]✅ Selected database: {selected_db}[/green]")
         return [selected_db] if selected_db != "none" else []
+    
+    def _get_serverless_options(self) -> List[str]:
+        """Get Serverless specific options (language selection)"""
+        self.ui.show_panel("☁️  Serverless Configuration", "Let's configure your Serverless project!")
+        framework_config = self.config_manager.get_framework_config("serverless")
+        languages = framework_config.get("languages", ["javascript"])
+        language_descriptions = framework_config.get("language_descriptions", {})
+        default_language = framework_config.get("default_language", "javascript")
+
+        # Language selection table
+        lang_table = self.ui.create_table("🗣️  Language Selection", [
+            ("#", "dim"),
+            ("Language", "primary"),
+            ("Description", "secondary")
+        ])
+        for i, lang in enumerate(languages, 1):
+            desc = language_descriptions.get(lang, lang)
+            lang_table.add_row(str(i), lang, desc)
+        console.print(lang_table)
+        default_choice = languages.index(default_language) + 1 if default_language in languages else 1
+        lang_choice = self.ui.get_user_choice("Choose language number", len(languages), default_choice)
+        selected_lang = languages[lang_choice - 1]
+        console.print(f"[green]✅ Selected language: {selected_lang}[/green]")
+        return [selected_lang]
     
     def _get_feature_selection(self, framework: str) -> List[str]:
         """Generic feature selection for frameworks"""

@@ -57,6 +57,26 @@ DEFAULT_CONFIG = {
             "flask": {
                 "name": "Flask",
                 "description": "Lightweight WSGI web application framework"
+            },
+            "django": {
+                "name": "Django",
+                "description": "The web framework for perfectionists with deadlines"
+            },
+            "svelte": {
+                "name": "Svelte",
+                "description": "Cybernetically enhanced web apps"
+            },
+            "serverless": {
+                "name": "Serverless",
+                "description": "Serverless application template (AWS Lambda, etc.)",
+                "languages": ["javascript", "typescript", "python", "go"],
+                "default_language": "javascript",
+                "language_descriptions": {
+                    "javascript": "Node.js (JavaScript) runtime for AWS Lambda, etc.",
+                    "typescript": "TypeScript runtime for AWS Lambda, etc.",
+                    "python": "Python 3.x runtime for AWS Lambda, etc.",
+                    "go": "Go 1.x runtime for AWS Lambda, etc."
+                }
             }
         }
     },

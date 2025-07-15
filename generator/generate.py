@@ -60,7 +60,7 @@ def merge_package_json(framework: str, features: list[str], target_path: Path):
             feature_pkg_path = TEMPLATE_DIR / framework / f"{router}-{feature}" / "package.json"
             feature_pkg = load_json(feature_pkg_path)
             final_pkg = merge_dicts(final_pkg, feature_pkg)
-    elif framework == "express" and features and features[0] in ["mongodb", "postgresql", "supabase", "serverless"]:
+    elif framework == "express" and features and features[0] in ["mongodb", "postgresql", "supabase"]:
         # Express with database - use database-specific package.json
         db_pkg_path = TEMPLATE_DIR / framework / features[0] / "package.json"
         final_pkg = load_json(db_pkg_path)
@@ -77,17 +77,17 @@ def merge_package_json(framework: str, features: list[str], target_path: Path):
 
 def generate_project(framework: str, features: list[str], target_dir: str):
     target_path = Path(target_dir).resolve()
-    print(f"\n[bold cyan]🚀 Generating '{framework}' project...[/bold cyan]")
+    print(f"\n[bold cyan]🚀 Generating '{framework}' project...[bold cyan]")
     print(f"[blue]📁 Output directory:[/blue] {target_path}")
     print(f"[magenta]🧩 Features:[/magenta] {features if features else 'None'}")
 
     if framework == "nextjs":
         if not features:
-            print("[red]❌ For Next.js, you must specify a router type as the first feature: 'app' or 'pages'.[/red]")
+            print("[red]❌ For Next.js, you must specify a router type as the first feature: 'app' or 'pages'.[red]")
             return
         router = features[0]
         if router not in ("app", "pages"):
-            print(f"[red]❌ Invalid router type '{router}'. Must be 'app' or 'pages'.[/red]")
+            print(f"[red]❌ Invalid router type '{router}'. Must be 'app' or 'pages'.[red]")
             return
         # Copy base (app or pages)
         base_path = TEMPLATE_DIR / framework / router
@@ -96,21 +96,31 @@ def generate_project(framework: str, features: list[str], target_dir: str):
         for feature in features[1:]:
             feature_path = TEMPLATE_DIR / framework / f"{router}-{feature}"
             if not feature_path.exists():
-                print(f"[yellow]⚠️  Skipping missing feature: {feature_path}[/yellow]")
+                print(f"[yellow]⚠️  Skipping missing feature: {feature_path}[yellow]")
                 continue
             copy_template(feature_path, target_path)
     elif framework == "express":
         # Handle Express with database selection
-        if features and features[0] in ["mongodb", "postgresql", "supabase", "serverless"]:
+        if features and features[0] in ["mongodb", "postgresql", "supabase"]:
             # Copy database-specific template
             db_template_path = TEMPLATE_DIR / framework / features[0]
             copy_template(db_template_path, target_path)
-            print(f"[green]✅ Using {features[0]} database template[/green]")
+            print(f"[green]✅ Using {features[0]} database template[green]")
         else:
             # Copy base Express template (no database)
             base_path = TEMPLATE_DIR / framework / "base"
             copy_template(base_path, target_path)
-            print(f"[green]✅ Using base Express template (no database)[/green]")
+            print(f"[green]✅ Using base Express template (no database)[green]")
+    elif framework == "serverless":
+        # Use language as subfolder
+        valid_languages = ["javascript", "typescript", "python", "go"]
+        if not features or features[0] not in valid_languages:
+            print(f"[red]❌ For Serverless, you must specify a valid language: {', '.join(valid_languages)}.[red]")
+            return
+        lang = features[0]
+        lang_template_path = TEMPLATE_DIR / framework / lang
+        copy_template(lang_template_path, target_path)
+        print(f"[green]✅ Using {lang} serverless template[green]")
     else:
         # Copy base
         base_path = TEMPLATE_DIR / framework / "base"
@@ -119,7 +129,7 @@ def generate_project(framework: str, features: list[str], target_dir: str):
         for feature in features:
             feature_path = TEMPLATE_DIR / framework / feature
             if not feature_path.exists():
-                print(f"[yellow]⚠️  Skipping missing feature: {feature_path}[/yellow]")
+                print(f"[yellow]⚠️  Skipping missing feature: {feature_path}[yellow]")
                 continue
             copy_template(feature_path, target_path)
 
@@ -129,4 +139,4 @@ def generate_project(framework: str, features: list[str], target_dir: str):
     # Merge package.json
     merge_package_json(framework, features, target_path)
 
-    print(f"\n[bold green]🎉 Project '{framework}' created successfully at {target_path}![/bold green]")
+    print(f"\n[bold green]🎉 Project '{framework}' created successfully at {target_path}![bold green]")
