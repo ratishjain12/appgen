@@ -106,14 +106,17 @@ class ConfigManager:
     
     def _get_default_config_path(self) -> Path:
         """Get the default config file path"""
-        user_config = Path.home() / ".appgen" / "config.yaml"
         local_config = Path("appgen.config.yaml")
-        if user_config.exists():
-            return user_config
-        elif local_config.exists():
+        user_config = Path.home() / ".appgen" / "config.yaml"
+        
+        # Always prefer local config over user config
+        if local_config.exists():
             return local_config
-        else:
+        elif user_config.exists():
             return user_config
+        else:
+            # Create local config instead of user config
+            return local_config
     
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from file or create default"""
