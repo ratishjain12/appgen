@@ -166,22 +166,16 @@ def config():
 
 @app.command()
 def preset(
-    name: Optional[str] = typer.Argument(None, help="Name of the preset (e.g., mern)"),
+    name: Optional[str] = typer.Argument(None, help="Name of the preset (e.g., mern, headless-cms)"),
     dir: Optional[str] = typer.Option(None, help="Base directory to generate the project in")
 ):
     """Generate a project using a predefined preset."""
-    presets = {
-        "mern": {
-            "description": "MongoDB + Express + React + Node.js",
-            "framework": "express",
-            "features": ["mongodb"]
-        },
-        "nextjs-fullstack": {
-            "description": "Next.js with Prisma and TypeScript",
-            "framework": "nextjs",
-            "features": ["app", "typescript", "prisma"]
-        }
-    }
+    # Get presets from config
+    presets = config_manager.get_presets()
+    
+    if not presets:
+        console.print("[red]❌ No presets configured[/red]")
+        raise typer.Exit(1)
     
     if not name:
         # Interactive preset selection
@@ -203,8 +197,37 @@ def preset(
         dir = Prompt.ask(f"Enter project directory name", default=f"my-{name}")
     
     console.print(f"[cyan]🚀 Generating {name} preset...[/cyan]")
-    generate_project(preset_info["framework"], preset_info["features"], dir)
-    console.print(f"[green]✅ {name} project created successfully at {dir}![/green]")
+    
+    if "frontend" in preset_info and "backend" in preset_info:
+        # Generate frontend
+        frontend = preset_info["frontend"]
+        frontend_dir = f"{dir}/{frontend['directory']}" if frontend['directory'] != "." else dir
+        console.print(f"[blue]📱 Generating frontend ({frontend['framework']})...[/blue]")
+        generate_project(frontend["framework"], frontend["features"], frontend_dir)
+        
+        # Generate backend
+        backend = preset_info["backend"]
+        backend_dir = f"{dir}/{backend['directory']}"
+        console.print(f"[green]🖥️  Generating backend ({backend['framework']})...[/green]")
+        generate_project(backend["framework"], backend["features"], backend_dir)
+        
+        console.print(f"[bold green]🎉 Fullstack {name} project created successfully![/bold green]")
+        console.print(f"[cyan]Frontend:[/cyan] {frontend_dir}")
+        console.print(f"[cyan]Backend:[/cyan] {backend_dir}")
+    
+    elif "frontend" in preset_info:
+        frontend = preset_info["frontend"]
+        final_dir = dir if frontend['directory'] == "." else f"{dir}/{frontend['directory']}"
+        generate_project(frontend["framework"], frontend["features"], final_dir)
+        console.print(f"[green]✅ {name} project created successfully at {final_dir}![/green]")
+    
+    elif "framework" in preset_info:
+        generate_project(preset_info["framework"], preset_info["features"], dir)
+        console.print(f"[green]✅ {name} project created successfully at {dir}![/green]")
+    
+    else:
+        console.print(f"[red]❌ Invalid preset configuration for {name}[/red]")
+        raise typer.Exit(1)
 
 
 @app.callback(invoke_without_command=True)

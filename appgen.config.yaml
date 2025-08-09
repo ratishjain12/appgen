@@ -50,6 +50,10 @@ frameworks:
       name: "Svelte"
       description: "Cybernetically enhanced web apps"
 
+    strapi:
+      name: "Strapi"
+      description: "Headless CMS to build powerful APIs with no effort"
+
     serverless:
       name: "Serverless"
       description: "Serverless application template (AWS Lambda, etc.)"
@@ -89,6 +93,18 @@ presets:
       framework: "nextjs"
       features: ["app", "typescript", "tailwind", "t3"]
       directory: "."
+
+  headless-cms:
+    name: "Headless CMS (Next.js + Strapi)"
+    description: "Next.js frontend with Strapi CMS backend for modern headless architecture"
+    frontend:
+      framework: "nextjs"
+      features: ["app", "typescript", "tailwind"]
+      directory: "frontend"
+    backend:
+      framework: "strapi"
+      features: []
+      directory: "cms"
 
 ui:
   welcome_message: "Welcome to AppGen!"
