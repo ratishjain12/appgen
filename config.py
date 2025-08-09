@@ -199,6 +199,9 @@ class ConfigManager:
         framework_config["feature_descriptions"][feature] = description
         self._save_config()
     
+    def get_presets(self) -> Dict[str, Any]:
+        return self.config.get("presets", {})
+    
     def _save_config(self):
         try:
             with self.config_path.open('w') as f:
