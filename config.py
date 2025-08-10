@@ -9,7 +9,6 @@ from rich.console import Console
 
 console = Console()
 
-# Default configuration
 DEFAULT_CONFIG = {
     "frameworks": {
         "interactive": {
@@ -101,25 +100,17 @@ DEFAULT_CONFIG = {
 
 class ConfigManager:
     def __init__(self, config_path: Optional[Path] = None):
-        self.config_path = config_path or self._get_default_config_path()
-        self.config = self._load_config()
+        # Always use the YAML config file path
+        self.config_path = config_path or Path("appgen.config.yaml")
+        # Don't cache config - always load fresh
+        self._config = None
     
     def _get_default_config_path(self) -> Path:
-        """Get the default config file path"""
-        local_config = Path("appgen.config.yaml")
-        user_config = Path.home() / ".appgen" / "config.yaml"
-        
-        # Always prefer local config over user config
-        if local_config.exists():
-            return local_config
-        elif user_config.exists():
-            return user_config
-        else:
-            # Create local config instead of user config
-            return local_config
+        """Get the default config file path - always use appgen.config.yaml"""
+        return Path("appgen.config.yaml")
     
     def _load_config(self) -> Dict[str, Any]:
-        """Load configuration from file or create default"""
+        """Load configuration from YAML file - NO CACHING, always fresh load"""
         if self.config_path.exists():
             try:
                 with self.config_path.open('r') as f:
@@ -135,8 +126,14 @@ class ConfigManager:
                 console.print(f"[red]Error loading config: {e}[/red]")
                 return DEFAULT_CONFIG
         else:
-            self._create_default_config()
+            console.print(f"[yellow]Config file not found: {self.config_path}[/yellow]")
+            console.print("[yellow]Using default configuration[/yellow]")
             return DEFAULT_CONFIG
+    
+    @property
+    def config(self) -> Dict[str, Any]:
+        """Always load fresh config - no caching"""
+        return self._load_config()
     
     def _create_default_config(self):
         """Create default configuration file"""
@@ -153,12 +150,15 @@ class ConfigManager:
             console.print(f"[red]Error creating config: {e}[/red]")
     
     def get_interactive_frameworks(self) -> Dict[str, Any]:
+        """Get interactive frameworks - always fresh load"""
         return self.config.get("frameworks", {}).get("interactive", {})
     
     def get_simple_frameworks(self) -> Dict[str, Any]:
+        """Get simple frameworks - always fresh load"""
         return self.config.get("frameworks", {}).get("simple", {})
     
     def get_framework_config(self, framework: str) -> Optional[Dict[str, Any]]:
+        """Get framework config - always fresh load"""
         interactive = self.get_interactive_frameworks()
         simple = self.get_simple_frameworks()
         if framework in interactive:
@@ -168,50 +168,36 @@ class ConfigManager:
         return None
     
     def get_ui_config(self) -> Dict[str, Any]:
+        """Get UI config - always fresh load"""
         return self.config.get("ui", {})
     
     def get_template_config(self) -> Dict[str, Any]:
+        """Get template config - always fresh load"""
         return self.config.get("templates", {})
     
     def add_framework(self, framework_type: str, name: str, config: Dict[str, Any]):
-        if framework_type not in ["interactive", "simple"]:
-            raise ValueError("framework_type must be 'interactive' or 'simple'")
-        self.config["frameworks"][framework_type][name] = config
-        self._save_config()
+        """Add framework - NO PERSISTENCE (read-only from YAML)"""
+        console.print("[yellow]Warning: Cannot modify configuration - using read-only YAML config[/yellow]")
+        raise NotImplementedError("Configuration is read-only from YAML file")
     
     def remove_framework(self, framework_type: str, name: str):
-        if framework_type not in ["interactive", "simple"]:
-            raise ValueError("framework_type must be 'interactive' or 'simple'")
-        if name in self.config["frameworks"][framework_type]:
-            del self.config["frameworks"][framework_type][name]
-            self._save_config()
+        """Remove framework - NO PERSISTENCE (read-only from YAML)"""
+        console.print("[yellow]Warning: Cannot modify configuration - using read-only YAML config[/yellow]")
+        raise NotImplementedError("Configuration is read-only from YAML file")
     
     def add_feature(self, framework: str, feature: str, description: str):
-        framework_config = self.get_framework_config(framework)
-        if not framework_config:
-            raise ValueError(f"Framework '{framework}' not found")
-        if "features" not in framework_config:
-            framework_config["features"] = []
-        if feature not in framework_config["features"]:
-            framework_config["features"].append(feature)
-        if "feature_descriptions" not in framework_config:
-            framework_config["feature_descriptions"] = {}
-        framework_config["feature_descriptions"][feature] = description
-        self._save_config()
+        """Add feature - NO PERSISTENCE (read-only from YAML)"""
+        console.print("[yellow]Warning: Cannot modify configuration - using read-only YAML config[/yellow]")
+        raise NotImplementedError("Configuration is read-only from YAML file")
     
     def get_presets(self) -> Dict[str, Any]:
+        """Get presets - always fresh load"""
         return self.config.get("presets", {})
     
     def _save_config(self):
-        try:
-            with self.config_path.open('w') as f:
-                if self.config_path.suffix == '.yaml':
-                    import yaml
-                    yaml.dump(self.config, f, default_flow_style=False, indent=2)
-                else:
-                    json.dump(self.config, f, indent=2)
-        except Exception as e:
-            console.print(f"[red]Error saving config: {e}[/red]")
+        """Save configuration - DISABLED (read-only from YAML)"""
+        console.print("[yellow]Warning: Cannot save configuration - using read-only YAML config[/yellow]")
+        pass
 
 # Global config instance
 config_manager = ConfigManager() 
