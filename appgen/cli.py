@@ -10,7 +10,7 @@ from typing import Optional, List
 from .ui_helper import UIHelper, console
 from .framework_selector import FrameworkSelector
 from .project_manager import ProjectManager
-from config import config_manager
+from .config import config_manager
 from generator.generate import generate_project
 
 # Initialize Typer app

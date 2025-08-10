@@ -100,14 +100,23 @@ DEFAULT_CONFIG = {
 
 class ConfigManager:
     def __init__(self, config_path: Optional[Path] = None):
-        # Always use the YAML config file path
-        self.config_path = config_path or Path("appgen.config.yaml")
+        # Get config file path from package directory
+        self.config_path = config_path or self._get_package_config_path()
         # Don't cache config - always load fresh
         self._config = None
     
+    def _get_package_config_path(self) -> Path:
+        """Get the config file path from the package directory"""
+        # Since config.py is now in the appgen package, 
+        # the YAML file will be in the same directory
+        current_dir = Path(__file__).parent
+        package_config = current_dir / "appgen.config.yaml"
+        console.print(f"[blue]Looking for config in package: {package_config}[/blue]")
+        return package_config
+    
     def _get_default_config_path(self) -> Path:
-        """Get the default config file path - always use appgen.config.yaml"""
-        return Path("appgen.config.yaml")
+        """Get the default config file path - package directory only"""
+        return self._get_package_config_path()
     
     def _load_config(self) -> Dict[str, Any]:
         """Load configuration from YAML file - NO CACHING, always fresh load"""
