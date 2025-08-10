@@ -38,5 +38,5 @@ packages = ["generator", "appgen"]
 py-modules = ["genapp","config"]
 
 [tool.setuptools.package-data]
-
 "generator" = ["../templates/**/*"]
+"appgen" = ["../appgen.config.yaml"]
