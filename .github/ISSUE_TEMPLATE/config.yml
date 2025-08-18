@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🚀 AppGen Community
+    url: https://github.com/yourusername/appgen/discussions
+    about: Please ask and answer questions here.
+  - name: 📖 Documentation
+    url: https://github.com/yourusername/appgen#readme
+    about: Check the README for installation and usage instructions.
