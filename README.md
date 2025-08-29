@@ -2,6 +2,8 @@
 
 A modern project generator CLI for web frameworks. Quickly scaffold projects for Next.js, React, Express, Flask, Django, and more with support for TypeScript, Tailwind CSS, databases, and modern tooling.
 
+https://github.com/user-attachments/assets/3fa52efa-5fe7-421d-b4c1-574048509dc2
+
 ## ✨ Features
 
 - **Multiple Frameworks**: Next.js, React, Express, Flask, Django, Svelte
