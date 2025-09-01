@@ -263,19 +263,25 @@ appgen preset --help
 After generation, your project will include:
 
 ```
-my-project/
-├── README.md           # Project documentation
-├── package.json        # Dependencies and scripts
-├── .env.example        # Environment variables template
-├── .gitignore          # Git ignore rules
-├── tsconfig.json       # TypeScript config (if applicable)
-├── tailwind.config.js  # Tailwind config (if applicable)
-└── src/                # Source code
-    ├── components/     # Reusable components
-    ├── pages/          # Pages (Next.js Pages Router)
-    ├── app/            # App directory (Next.js App Router)
-    ├── lib/            # Utility functions
-    └── ...
+appgen/
+├── README.md                    # Project documentation with usage examples
+├── pyproject.toml              # Python project configuration & dependencies
+├── requirements.txt            # Python dependencies list
+├── MANIFEST.in                 # Python package manifest
+├── CODE_OF_CONDUCT.md          # Community code of conduct
+├── CONTRIBUTING.md             # Contribution guidelines
+├── .gitignore                  # Git ignore rules
+├── .mypy.ini                   # MyPy type checker configuration
+├── genapp.py                   # Main entry point script
+├── .DS_Store                   # macOS system file (should be gitignored)
+├── .github/                    # GitHub workflows & issue templates
+│   └── (issue templates added recently)
+├── appgen/                     # Main Python package (version 0.3.2)
+│   └── (core CLI modules)
+├── generator/                  # Project generation logic
+│   └── (templates and generation utilities)
+└── templates/                  # Framework templates with presets & strapi support
+    └── (fixed preset configurations)
 ```
 
 ## 🚀 Next Steps
